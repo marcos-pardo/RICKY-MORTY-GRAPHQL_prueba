@@ -21,9 +21,9 @@ export const resolvers = {
 
             if(!data) throw new GraphQLError ("No existe personaje")
 
-            const repsonse: Character = await data.json() 
+            const response: Character = await data.json() 
 
-            return repsonse
+            return response
         },
 
         charactersByIds: async(_:unknown, args: addIds): Promise<Character[]> => {
@@ -36,20 +36,28 @@ export const resolvers = {
 
             if(!data) throw new GraphQLError ("No existe personaje")
 
-            const repsonse: Character[] = await data.json() 
+            const response: Character[] = await data.json() 
 
-            return repsonse
+            return response
         },
     },
 
     Character: {
         location: async(parent: Character, _: unknown): Promise<Location | null> => {
             try {
-                const loc = parent.location.url
+                const loc = parent.location.name
 
-                const data = await fetch(loc)
+                const url = `https://rickandmortyapi.com/api/location/?name=${loc}`
+
+                console.log(url)
+                
+
+                const data = await fetch(url)
 
                 const response: Location = await data.json()
+
+
+                console.log(response)
 
                 return response
 
@@ -76,7 +84,9 @@ export const resolvers = {
 
         episode: async (parent: Character, _: unknown): Promise<Episode[]> => {
             const loc = parent.episode;
-            console.log(loc);
+
+        
+        
         
             const mapeo = await Promise.all(loc.map(async (elem) => {
                 const data = await fetch(elem);
@@ -90,7 +100,8 @@ export const resolvers = {
     Episode :{
         characters: async (parent: Episode, _: unknown): Promise<Character[]> => {
             const loc = parent.characters;
-            console.log(loc);
+            
+            
         
             const mapeo = await Promise.all(loc.map(async (elem) => {
                 const data = await fetch(elem);

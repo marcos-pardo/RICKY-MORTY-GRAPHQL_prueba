@@ -10,7 +10,7 @@ const server = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(server,{
-  listen: {port: 6500}
+  listen: {port: 7500}
 });
 
 console.info(`Server ready at ${url}`);
